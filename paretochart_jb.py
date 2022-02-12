@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 
 #upload the helpDesk.csv to your google drive
-df = pd.read_csv("/content/drive/MyDrive/IT 496/HelpDeskData.csv")
+df = pd.read_csv("./HelpDesk.csv")
 
 # print(df)
 
@@ -19,12 +19,12 @@ df = pd.read_csv("/content/drive/MyDrive/IT 496/HelpDeskData.csv")
 df.index = df['reason']
 
 #descending order
-df = df.sort_values(by='frequency', ascending = False)
+df = df.sort_values(by='importance(1-10)', ascending = False)
 
 # print(df)
 
 #cumlative percentage column is created w/ cumsum function
-df['cumlativePercentage'] = df['frequency'].cumsum()/df['frequency'].sum()*100
+df['cumlativePercentage'] = df['importance(1-10)'].cumsum()/df['importance(1-10)'].sum()*100
 
 #make sure only 2 decimals points are shown
 df['cumlativePercentage'] = df['cumlativePercentage'].apply(lambda x: round(x,2))
@@ -34,7 +34,7 @@ print(df)
 
 fig, ax = plt.subplots()
 
-ax.bar(df.index, df['frequency'], color='B1')
+ax.bar(df.index, df['importance(1-10)'], color='C3')
 
 #show labels diagonally
 ax.set_xticklabels( df['reason'], rotation = 45)
@@ -42,13 +42,13 @@ ax.set_xticklabels( df['reason'], rotation = 45)
 #ax2 and ax1 will be shown at same time with twinx func
 ax2 = ax.twinx()
 
-ax2.plot(df.index, df['cumlativePercentage'], color='C2', marker='D', ms=7)
+ax2.plot(df.index, df['cumlativePercentage'], color='C9', marker='D', ms=7)
 ax2.yaxis.set_major_formatter(PercentFormatter())
 
 
 
-ax.tick_params(axis='y', colors='C3')
-ax2.tick_params(axis='y', colors='C3')
+ax.tick_params(axis='y', colors='C2')
+ax2.tick_params(axis='y', colors='C1')
 
 
 
@@ -57,3 +57,4 @@ for index, v in df.iterrows():
     plt.annotate(label, xy=(v['reason'], v['cumlativePercentage']), color='C1')
 
 plt.show()
+
